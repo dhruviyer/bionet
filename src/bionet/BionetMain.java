@@ -63,10 +63,19 @@ public class BionetMain {
 			
 			if(organisms.size()%2==1)
 				addOrganism();
+			
+			mate();
+			
+			System.out.println("Number of Organisms: "+organisms.size());
+			
+			population = organisms.size();
 		}
+		population = organisms.size();
 
+		mate();
 		
-		printSurvival();
+		sequenceGenomes();
+
 		
 		
 	}
@@ -134,6 +143,12 @@ public class BionetMain {
 		}
 		organisms.get(organisms.size()-1).setGenome(tempGenome);
 	}
+	
+	public static void addOrganism(double[] genome)
+	{
+		organisms.add(new Organism(numChromasomes));
+		organisms.get(organisms.size()-1).setGenome(genome);
+	}
 
 	public static void killOff()
 	{
@@ -144,6 +159,29 @@ public class BionetMain {
 				organisms.remove(i);
 			else
 				i++;
+		}
+	}
+
+	public static void mate()
+	{
+		int pop = organisms.size();
+		for(int i = 0; i<=pop-2; i+=2)
+		{
+			double[] genome1 = organisms.get(i).getGenome();
+			double[] genome2 = organisms.get(i+1).getGenome();
+			double[] genome = new double[numChromasomes];
+			
+			for(int j = 0; j<numChromasomes; j++)
+			{
+				if(new Random().nextDouble()>0.5)
+					genome[i] = genome1[i];
+				else
+					genome[i] = genome2[i];
+			}
+			
+			addOrganism(genome);
+			organisms.remove(i);
+			organisms.remove(i+1);
 		}
 	}
 }
